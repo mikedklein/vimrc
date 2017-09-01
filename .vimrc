@@ -1,137 +1,158 @@
-"Set nocompatible              " be iMproved, required
-filetype off                  " required
+" Specify a directory for plugins
+" - For Neovim: ~/.local/share/nvim/plugged
+" - Avoid using standard Vim directory names like 'plugin'
+call plug#begin('~/.vim/plugged')
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+" Make sure to use single quotes for plugins
 
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" JS Syntax highlighting
-Plugin 'othree/yajs.vim'
-" Vim Airline Plugin
-Plugin 'bling/vim-airline'
-" Nerd Tree
-Plugin 'scrooloose/nerdtree'
-" Vim 80's Plugin
-Plugin 'justincampbell/vim-eighties'
-" Fugitive Plugin
-Plugin 'tpope/vim-fugitive'
-" Emmet Plugin for Vim
-Plugin 'mattn/emmet-vim'
-" SCSS Syntax Hihlighter
-Plugin 'cakebaker/scss-syntax.vim'
-" JSON Vim Plugin
-Plugin 'elzr/vim-json'
-" Angular Vim Plugin
-Plugin 'burnettk/vim-angular'
-" Javascript Syntax Stuff
-Plugin 'pangloss/vim-javascript'
-" Color Schemes
-Plugin 'flazz/vim-colorschemes'
-" Plugins for Snip Mate
-Plugin 'MarcWeber/vim-addon-mw-utils'
-Plugin 'tomtom/tlib_vim'
-Plugin 'garbas/vim-snipmate'
-" Optional:
-Plugin 'honza/vim-snippets'
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-" filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just
-" :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to
-" auto-approve removal
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this lineixecute pathogen#infect()
+" Ctrl P file search
+Plug 'kien/ctrlp.vim'
+
+" Emmet Vim
+Plug 'mattn/emmet-vim'
+
+" Gruvbox theme
+Plug 'morhetz/gruvbox'
+
+" Lexima auto close brakets and such
+Plug 'cohama/lexima.vim'
+
+" Nerdtree
+Plug 'scrooloose/nerdtree'
+
+" post install (yarn install | npm install) then load plugin only for editing supported files
+Plug 'prettier/vim-prettier', {
+	\ 'do': 'yarn install',
+	\ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql'] }
+
+" Syntastic
+Plug 'vim-syntastic/syntastic'
+
+" Prefer EsLint over Syntastic globals
+Plug 'mtscout6/syntastic-local-eslint.vim'
+
+" Airline
+Plug 'vim-airline/vim-airline'
+
+" airline themes
+Plug 'vim-airline/vim-airline-themes'
+
+" Sensible
+Plug 'tpope/vim-sensible'
+
+" Vim Surround
+Plug 'tpope/vim-surround'
+
+" Javascript syntax
+Plug 'pangloss/vim-javascript'
+
+" JSX
+Plug 'mxw/vim-jsx'
+
+" Initialize plugin system
+call plug#end()
+
 filetype plugin indent on
+syntax on
+
+" Color Scheme
 syntax enable
 set background=dark
-colorscheme material-theme
-" Allow for switching between files while they are hidden
-set hidden
-" Better Command line Completion
-set wildmenu
-" Highlight searches
-set hlsearch
-" Use case insensitive search, except when using capital letters
-set ignorecase
-set smartcase
-" Allow backspacing over autoindent, line breaks and start of insert action
-set backspace=indent,eol,start
-" When opening a new line and no filetype-specific indenting is enabled, keep
-" the same indent as the line you're currently on. Useful for READMEs, etc.
-set autoindent
- 
-" Stop certain movements from always going to the first character of a line.
-" While this behaviour deviates from that of Vi, it does what most users
-" coming from other editors would expect.
-set nostartofline
+colorscheme gruvbox 
 
-" Open splits to right by default
-set splitright
+" Use 256 colours (Use this setting only if your terminal supports 256 colours)
+set t_Co=256
 
-" Display the cursor position on the last line of the screen or in the status
-" line of a window
-set ruler
- 
-" Always display the status line, even if only one window is displayed
-set laststatus=2
- 
-" Instead of failing a command because of unsaved changes, instead raise a
-" dialogue asking if you wish to save changed files.
-set confirm
- 
-" Use visual bell instead of beeping when doing something wrong
-set visualbell
- 
-" And reset the terminal code for the visual bell. If visualbell is set, and
-" this line is also included, vim will neither flash nor beep. If visualbell
-" is unset, this does nothing.
-set t_vb=
- 
-" Enable use of the mouse for all modes
-set mouse=a
- 
-" Set the command window height to 2 lines, to avoid many cases of having to
-" press <Enter> to continue
-set cmdheight=2
- 
-" Display line numbers on the left
+" Set Font
+set guifont=Fira\ Code:h12
+
+" Always show line numbers
+set relativenumber
 set number
- 
-" Quickly time out on keycodes, but never time out on mappings
-set notimeout ttimeout ttimeoutlen=200
- 
-" Use <F11> to toggle between 'paste' and 'nopaste'
-set pastetoggle=<F11>
- 
- 
-"------------------------------------------------------------
-" Indentation options {{{1
-"
-" Indentation settings according to personal preference.
- 
-" Indentation settings for using 4 spaces instead of tabs.
-" Do not change 'tabstop' from its default value of 8 with this setup.
-set shiftwidth=4
-set softtabstop=4
-set expandtab
- 
-" Indentation settings for using hard tabs for indent. Display tabs as
-" four characters wide.
-"set shiftwidth=4
-"set tabstop=4
 
-" Set Syntax for ES6 files
-au BufNewFile,BufRead *.es6 set filetype=javascript
+" Map nt to NerdTree command
+:command NT NERDTree
+
+" Prettier Settings
+" max line lengh that prettier will wrap on
+let g:prettier#config#print_width = 80
+
+" number of spaces per indentation level
+let g:prettier#config#tab_width = 2
+
+" use tabs over spaces
+let g:prettier#config#use_tabs = 'false'
+
+" print semicolons
+let g:prettier#config#semi = 'true'
+
+" single quotes over double quotes
+let g:prettier#config#single_quote = 'true' 
+
+" print spaces between brackets
+let g:prettier#config#bracket_spacing = 'true' 
+
+" put > on the last line instead of new line
+let g:prettier#config#jsx_bracket_same_line = 'true' 
+
+" Tabs to spaces and also make sure all indents are two spaces
+set expandtab
+set tabstop=2
+set shiftwidth=2
+filetype plugin indent on
+
+" Setup Syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_loc_list_height = 5
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 1
+let g:syntastic_javascript_checkers = ['eslint']
+
+let g:syntastic_error_symbol = '❌'
+let g:syntastic_style_error_symbol = '⁉️'
+let g:syntastic_warning_symbol = '⚠️'
+let g:syntastic_style_warning_symbol = '💩'
+
+highlight link SyntasticErrorSign SignColumn
+highlight link SyntasticWarningSign SignColumn
+highlight link SyntasticStyleErrorSign SignColumn
+highlight link SyntasticStyleWarningSign SignColumn
+
+" For Airline
+let g:airline_theme='gruvbox'
+let g:airline_powerline_fonts = 1
+set laststatus=2
+
+" Show hidden files by default in NerdTree
+let g:NERDTreeShowHidden=1
+
+if has("gui_macvim")
+  " Press Ctrl-Tab to switch between open tabs (like browser tabs) to 
+  " the right side. Ctrl-Shift-Tab goes the other way.
+  noremap <C-Tab> :tabnext<CR>
+  noremap <C-S-Tab> :tabprev<CR>
+
+  " Switch to specific tab numbers with Command-number
+  noremap <D-1> :tabn 1<CR>
+  noremap <D-2> :tabn 2<CR>
+  noremap <D-3> :tabn 3<CR>
+  noremap <D-4> :tabn 4<CR>
+  noremap <D-5> :tabn 5<CR>
+  noremap <D-6> :tabn 6<CR>
+  noremap <D-7> :tabn 7<CR>
+  noremap <D-8> :tabn 8<CR>
+  noremap <D-9> :tabn 9<CR>
+  " Command-0 goes to the last tab
+  noremap <D-0> :tablast<CR>
+endif
+
+" Ignore some folders and files for CtrlP indexing
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\.git$\|\.yardoc\|node_modules\|log\|tmp$',
+  \ 'file': '\.so$\|\.dat$|\.DS_Store$'
+  \ }
